@@ -1004,6 +1004,9 @@ abstract class GraphStageLogic private[stream] (val inCount: Int, val outCount: 
       case _              => setHandler(out, next)
     }
 
+  override def toString: String =
+    attributes.get[Attributes.Name].map(attr => s"${getClass.toString}-${attr.n}").getOrElse(getClass.toString)
+
   private abstract class Emitting[T](val out: Outlet[T], val previous: OutHandler, andThen: () => Unit)
       extends OutHandler {
     private var followUps: Emitting[T] = _
@@ -1582,9 +1585,6 @@ abstract class GraphStageLogic private[stream] (val inCount: Int, val outCount: 
 
     override def toString = s"SubSourceOutlet($name)"
   }
-
-  override def toString: String =
-    attributes.get[Attributes.Name].map(attr => s"${getClass.toString}-${attr.n}").getOrElse(getClass.toString)
 
 }
 
